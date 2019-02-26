@@ -42,18 +42,6 @@ test('VTreeViewNode.ts', ({ mount }) => {
     }
   })
 
-  it('should return indeterminate icon', async () => {
-    const wrapper = mount(VTreeviewNode, {
-      provide: { treeview }
-    })
-
-    expect(wrapper.vm.computedIcon).toBe('$vuetify.icons.checkboxOff')
-
-    wrapper.setData({ isIndeterminate: true })
-
-    expect(wrapper.vm.computedIcon).toBe('$vuetify.icons.checkboxIndeterminate')
-  })
-
   it('should use scoped slots', () => {
     const wrapper = mount(Mock, {
       provide: { treeview }

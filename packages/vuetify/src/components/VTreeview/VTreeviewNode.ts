@@ -1,6 +1,7 @@
 // Components
 import { VExpandTransition } from '../transitions'
 import { VIcon } from '../VIcon'
+import { VSimpleCheckbox } from '../VCheckbox'
 import VTreeview from './VTreeview'
 import VTreeviewNode from './VTreeviewNode'
 
@@ -118,11 +119,6 @@ export default mixins<options>(
         open: this.isOpen
       }
     },
-    computedIcon (): string {
-      if (this.isIndeterminate) return this.indeterminateIcon
-      else if (this.isSelected) return this.onIcon
-      else return this.offIcon
-    },
     hasChildren (): boolean {
       return !!this.children && (!!this.children.length || !!this.loadChildren)
     }
@@ -197,21 +193,25 @@ export default mixins<options>(
       }, [this.isLoading ? this.loadingIcon : this.expandIcon])
     },
     genCheckbox () {
-      return this.$createElement(VIcon, {
+      return this.$createElement(VSimpleCheckbox, {
         staticClass: 'v-treeview-node__checkbox',
         props: {
-          color: this.isSelected ? this.selectedColor : undefined
+          color: this.isSelected ? this.selectedColor : undefined,
+          indeterminate: this.isIndeterminate,
+          indeterminateIcon: this.indeterminateIcon,
+          onIcon: this.onIcon,
+          offIcon: this.offIcon,
+          ripple: false,
+          value: this.isSelected
         },
         on: {
-          click: (e: MouseEvent) => {
-            e.stopPropagation()
-
+          input: (isSelected: boolean) => {
             if (this.isLoading) return
 
             this.checkChildren().then(() => {
               // We nextTick here so that items watch in VTreeview has a chance to run first
               this.$nextTick(() => {
-                this.isSelected = !this.isSelected
+                this.isSelected = isSelected
                 this.isIndeterminate = false
 
                 this.treeview.updateSelected(this.key, this.isSelected)
@@ -220,7 +220,7 @@ export default mixins<options>(
             })
           }
         }
-      }, [this.computedIcon])
+      })
     },
     genNode (): VNode {
       const children = [this.genContent()]

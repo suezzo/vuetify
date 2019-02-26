@@ -1,3 +1,5 @@
+import './VSimpleCheckbox.sass'
+
 import Vue, { VNode, VNodeDirective } from 'vue'
 import { VIcon } from '../VIcon'
 
@@ -70,7 +72,9 @@ export default Vue.extend({
       ...data,
       class: classes,
       on: {
-        click: () => {
+        click: (e: MouseEvent) => {
+          e.stopPropagation()
+
           if (data.on && data.on.input && !props.disabled) {
             wrapInArray(data.on.input).forEach(f => f(!props.value))
           }
