@@ -1,5 +1,5 @@
 {
-  "name": "vuetify",
+  "name": "@mparkitny/vuetify",
   "description": "Vue.js 2 Semantic Component Framework",
   "version": "1.5.5-alpha.0",
   "author": {
@@ -87,5 +87,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "daef2c18469aa319fa27ab116d3e1b7c5bf4ed2a"
 }
