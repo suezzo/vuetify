@@ -8,13 +8,12 @@ import Body from './mixins/body'
 import Foot from './mixins/foot'
 import Progress from './mixins/progress'
 
-import {
-  createSimpleFunctional,
-  getObjectValueByPath
-} from '../../util/helpers'
+import { createSimpleFunctional, getObjectValueByPath } from '../../util/helpers'
 
 // Importing does not work properly
 const VTableOverflow = createSimpleFunctional('v-table__overflow')
+
+const VTableScroll = createSimpleFunctional('v-table__scroll')
 
 /* @vue/component */
 export default {
@@ -82,13 +81,9 @@ export default {
   },
 
   created () {
-    const firstSortable = this.headers.find(h => (
-      !('sortable' in h) || h.sortable)
-    )
+    const firstSortable = this.headers.find(h => !('sortable' in h) || h.sortable)
 
-    this.defaultPagination.sortBy = !this.disableInitialSort && firstSortable
-      ? firstSortable.value
-      : null
+    this.defaultPagination.sortBy = !this.disableInitialSort && firstSortable ? firstSortable.value : null
 
     this.initPagination()
   },
@@ -103,19 +98,29 @@ export default {
   },
 
   render (h) {
-    const tableOverflow = h(VTableOverflow, {}, [
-      h('table', {
-        'class': this.classes
-      }, [
-        this.genTHead(),
-        this.genTBody(),
-        this.genTFoot()
-      ])
-    ])
+    const [firstHeader] = this.headers
 
-    return h('div', [
-      tableOverflow,
+    const tableOverflow = h(VTableOverflow, {}, [
+      h(
+        VTableScroll,
+        {
+          style: {
+            marginLeft: firstHeader.fixed ? firstHeader.width : 'auto'
+          }
+        },
+        [
+          h(
+            'table',
+            {
+              class: this.classes
+            },
+            [this.genTHead(), this.genTBody(), this.genTFoot()]
+          )
+        ]
+      ),
       this.genActionsFooter()
     ])
+
+    return h('div', { class: 'v-datatable-root' }, [tableOverflow])
   }
 }

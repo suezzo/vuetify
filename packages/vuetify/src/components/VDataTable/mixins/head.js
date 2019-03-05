@@ -48,11 +48,7 @@ export default {
       return this.$createElement('thead', [children])
     },
     genHeader (header, key) {
-      const array = [
-        this.$scopedSlots.headerCell
-          ? this.$scopedSlots.headerCell({ header })
-          : header[this.headerText]
-      ]
+      const array = [this.$scopedSlots.headerCell ? this.$scopedSlots.headerCell({ header }) : header[this.headerText]]
 
       return this.$createElement('th', ...this.genHeaderData(header, array, key))
     },
@@ -68,6 +64,8 @@ export default {
           'aria-sort': 'none'
         }
       }
+
+      if (header.fixed) classes.push('fixed-column')
 
       if (header.sortable == null || header.sortable) {
         this.genHeaderSortingData(header, children, data, classes)
@@ -106,11 +104,15 @@ export default {
       }
 
       classes.push('sortable')
-      const icon = this.$createElement(VIcon, {
-        props: {
-          small: true
-        }
-      }, this.sortIcon)
+      const icon = this.$createElement(
+        VIcon,
+        {
+          props: {
+            small: true
+          }
+        },
+        this.sortIcon
+      )
       if (!header.align || header.align === 'left') {
         children.push(icon)
       } else {

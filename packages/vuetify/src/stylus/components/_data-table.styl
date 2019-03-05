@@ -25,9 +25,16 @@ v-datatable($material)
 theme(v-datatable, "v-datatable")
 
 .v-datatable
+  &-root
+    position relative;
+
   .v-input--selection-controls
     margin: 0
     padding: 0
+
+  &.fixed-column
+    left: 0
+    width: 100%
 
   thead
     th.column.sortable
