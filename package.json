@@ -1,6 +1,6 @@
 {
-  "name": "vuetify",
-  "version": "1.3.0",
+  "name": "@mparkitny/vuetify",
+  "version": "1.3.21",
   "author": {
     "name": "John Leider",
     "email": "john@vuetifyjs.com"
